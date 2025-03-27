@@ -13,11 +13,18 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
 
     const onSubmit = async (e) => {
-        e.preventDefault()
-        if(!isSigningIn) {
-            setIsSigningIn(true)
-            await doSignInWithEmailAndPassword(email, password)
-            // doSendEmailVerification()
+        e.preventDefault();
+        try {
+            await doSignInWithEmailAndPassword(email, password);
+            // Additional logic after successful login (e.g., redirecting the user)
+        } catch (error) {
+            console.error("Error logging in:", error);
+            // Check for specific error codes and set error messages accordingly
+            if (error.code === 'auth/invalid-credential') {
+                setErrorMessage("Invalid password. Please try again.");
+            } else {
+                setErrorMessage("Error logging in: " + error.message);
+            }
         }
     }
 
@@ -30,6 +37,7 @@ const Login = () => {
             })
         }
     }
+    
 
     return (
         <div>
