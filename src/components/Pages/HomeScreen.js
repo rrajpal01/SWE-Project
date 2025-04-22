@@ -5,10 +5,15 @@ import swampBg from './assets/swamp-bg.jpg';
 function HomeScreen() {
   return (
     <div
+    //layout including swamp background that is centered on the page
+    //commenting at top due to other issues
+    //later on, i coded the sidebar that contains all the necessary features to cater to users and direct
+    //them to the pages
+    //the main box is a quick search feature as opposed to the other, in-depth one
       className="home-wrapper"
       style={{
         backgroundImage: `url(${swampBg})`,
-        backgroundSize: 'cover',
+        backgroundSize: 'cover', 
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center 40%',
         height: '100vh',
