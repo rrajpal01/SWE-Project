@@ -29,8 +29,11 @@ function HomeScreen() {
         <nav className="nav-menu">
           <a href="#">Home</a>
           <a href="#">Search</a>
+          <a href="#">Messages</a>
           <a href="#">Notifications</a>
           <a href="#">Profile</a>
+          <a href="#">Add Sublease</a>
+          <a href="#">Transactions</a>
         </nav>
       </aside>
 

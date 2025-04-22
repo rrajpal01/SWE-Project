@@ -32,6 +32,9 @@ function Profile() {
           <a href="#">Messages</a>
           <a href="#">Notifications</a>
           <a href="#">Profile</a>
+          <a href="#">Add Sublease</a>
+          <a href="#">Transactions</a>
+
         </nav>
       </aside>
 
