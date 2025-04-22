@@ -13,7 +13,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
+const firestore = getFirestore(app);
+const messaging = getMessaging(app);
 
 
-
-export { app, auth };
+export { app, auth, firestore, messasging };
