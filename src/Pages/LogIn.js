@@ -32,6 +32,8 @@ const Login = () => {
     }
 
     return (
+
+        
         <div>
             {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
 
@@ -102,7 +104,7 @@ const Login = () => {
                             </g>
                             <defs>
                                 <clipPath id="clip0_17_40">
-                                    <rect width="48" height="48" fill="white" />
+                                    <rect width="28" height="28" fill="white" />
                                 </clipPath>
                             </defs>
                         </svg>
