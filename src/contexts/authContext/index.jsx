@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../../firebase/firebase";
-// import { GoogleAuthProvider } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const AuthContext = React.createContext();
 
@@ -23,36 +22,44 @@ export function AuthProvider({ children }) {
 
   async function initializeUser(user) {
     if (user) {
-
       setCurrentUser({ ...user });
+      setUserLoggedIn(true);
 
       // check if provider is email and password login
       const isEmail = user.providerData.some(
         (provider) => provider.providerId === "password"
       );
       setIsEmailUser(isEmail);
-
-      // check if the auth provider is google or not
-    //   const isGoogle = user.providerData.some(
-    //     (provider) => provider.providerId === GoogleAuthProvider.PROVIDER_ID
-    //   );
-    //   setIsGoogleUser(isGoogle);
-
-      setUserLoggedIn(true);
+      setIsGoogleUser(!isEmail);
     } else {
       setCurrentUser(null);
       setUserLoggedIn(false);
+      setIsEmailUser(false);
+      setIsGoogleUser(false);
     }
-
     setLoading(false);
   }
 
+  async function logout() {
+    try {
+      await signOut(auth);
+      setCurrentUser(null);
+      setUserLoggedIn(false);
+      setIsEmailUser(false);
+      setIsGoogleUser(false);
+    } catch (error) {
+      console.error("Error logging out:", error);
+      throw error;
+    }
+  }
+
   const value = {
+    currentUser,
     userLoggedIn,
     isEmailUser,
     isGoogleUser,
-    currentUser,
-    setCurrentUser
+    loading,
+    logout
   };
 
   return (

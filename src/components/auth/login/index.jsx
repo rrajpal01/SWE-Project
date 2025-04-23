@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { doSignInWithEmailAndPassword } from '../../../firebase/auth'
 import { useAuth } from '../../../contexts/authContext'
 import swampBackground from '../../../assets/swamp-bg.jpg';
@@ -8,6 +8,7 @@ import "./LoginPage.css";
 
 const Login = () => {
     const { userLoggedIn } = useAuth()
+    const navigate = useNavigate()
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -18,16 +19,19 @@ const Login = () => {
         e.preventDefault();
         try {
             await doSignInWithEmailAndPassword(username, password);
+            navigate('/home', { replace: true })
         } catch (error) {
             console.error("Error logging in:", error);
             setErrorMessage("Invalid login credentials");
         }
     }
 
+    if (userLoggedIn) {
+        return <Navigate to="/home" replace={true} />
+    }
+
     return (
         <div className="login-container">
-            {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
-
             <div className="left-side" style={{ backgroundImage: `url(${swampBackground})` }}>
                 <div className="welcome-content">
                     <h1>Welcome to Swamp Stays</h1>
@@ -83,6 +87,6 @@ const Login = () => {
             </div>
         </div>
     )
-}
+};
 
-export default Login
+export default Login;
