@@ -1,0 +1,120 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+.left-side {
+  width: 40%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.welcome-content {
+  color: white;
+  z-index: 10;
+}
+
+.welcome-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.welcome-content p {
+  font-size: 1.2rem;
+}
+
+.gator-image {
+  position: absolute;
+  bottom: 400px;
+  left: 650px;
+  width: 150px;
+}
+
+.right-side {
+  width: 60%;
+  background-color: #b5d2c8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+}
+
+.login-form h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.forgot-password {
+  position: absolute;
+  right: 100px;
+  top: 50px; /* Positioned below the input */
+  background: none;
+  border: none;
+  color: #6b8e69;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.create-account-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.signup-link a {
+  color: #6b8e69;
+  text-decoration: underline;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+      flex-direction: column;
+  }
+  
+  .left-side, .right-side {
+      width: 100%;
+  }
+}
