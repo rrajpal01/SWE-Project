@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Library = () => {
   const [savedList, setSavedList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const auth = getAuth();
@@ -30,8 +32,18 @@ const Library = () => {
   }, []);
 
   const handleMessage = (apt) => {
-    // …your existing messaging flow…
-    console.log('Message about apt:', apt.id);
+    // If no ownerId, use current user's ID as fallback
+    const auth = getAuth();
+    const ownerId = apt.ownerId || auth.currentUser.uid;
+    
+    // Navigate to chat screen with apartment owner
+    navigate(`/chat/${apt.id}`, {
+      state: {
+        recipientId: ownerId,
+        apartmentId: apt.id,
+        apartmentName: apt.Description
+      }
+    });
   };
 
   const handleRent = (apt) => {
