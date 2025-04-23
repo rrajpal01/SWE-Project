@@ -15,10 +15,13 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = getAuth(app)
+const firestore = getFirestore(app);
+const messaging = getMessaging(app);
 const db = getDatabase(app);
 const database = getDatabase(app);
 const storage = getStorage(app);
 const firestore = getFirestore(app);
 
-export { app, auth, db, database, storage, firestore };
+
+export { app, auth, firestore, messasging };

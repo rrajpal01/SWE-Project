@@ -1,0 +1,84 @@
+[debug] [2025-04-21T07:57:00.056Z] ----------------------------------------------------------------------
+[debug] [2025-04-21T07:57:00.059Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve --only functions
+[debug] [2025-04-21T07:57:00.060Z] CLI Version:   14.2.0
+[debug] [2025-04-21T07:57:00.060Z] Platform:      win32
+[debug] [2025-04-21T07:57:00.060Z] Node Version:  v20.17.0
+[debug] [2025-04-21T07:57:00.060Z] Time:          Mon Apr 21 2025 03:57:00 GMT-0400 (Eastern Daylight Time)
+[debug] [2025-04-21T07:57:00.061Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-21T07:57:00.359Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-21T07:57:00.361Z] > authorizing via signed-in user (estherolatunji101@gmail.com)
+[debug] [2025-04-21T07:57:00.361Z] [iam] checking project swampstays-ea444 for permissions ["firebase.projects.get"]
+[debug] [2025-04-21T07:57:00.362Z] Checked if tokens are valid: true, expires at: 1745225568292
+[debug] [2025-04-21T07:57:00.362Z] Checked if tokens are valid: true, expires at: 1745225568292
+[debug] [2025-04-21T07:57:00.364Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444:testIamPermissions [none]
+[debug] [2025-04-21T07:57:00.364Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444:testIamPermissions x-goog-quota-user=projects/swampstays-ea444
+[debug] [2025-04-21T07:57:00.364Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-04-21T07:57:00.573Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444:testIamPermissions 200
+[debug] [2025-04-21T07:57:00.573Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-04-21T07:57:00.574Z] Checked if tokens are valid: true, expires at: 1745225568292
+[debug] [2025-04-21T07:57:00.574Z] Checked if tokens are valid: true, expires at: 1745225568292
+[debug] [2025-04-21T07:57:00.574Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444 [none]
+[debug] [2025-04-21T07:57:00.679Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444 200
+[debug] [2025-04-21T07:57:00.679Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/swampstays-ea444 {"projectNumber":"737278386601","projectId":"swampstays-ea444","lifecycleState":"ACTIVE","name":"SwampStays","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-03-23T20:06:41.612409Z"}
+[debug] [2025-04-21T07:57:00.699Z] defaultcredentials: writing to file C:\Users\Esthe\AppData\Roaming\firebase\estherolatunji101_gmail_com_application_default_credentials.json
+[debug] [2025-04-21T07:57:00.702Z] Setting GAC to C:\Users\Esthe\AppData\Roaming\firebase\estherolatunji101_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Esthe\\AppData\\Roaming\\firebase\\estherolatunji101_gmail_com_application_default_credentials.json"}}
+[debug] [2025-04-21T07:57:00.703Z] Checked if tokens are valid: true, expires at: 1745225568292
+[debug] [2025-04-21T07:57:00.703Z] Checked if tokens are valid: true, expires at: 1745225568292
+[debug] [2025-04-21T07:57:00.703Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/swampstays-ea444/adminSdkConfig [none]
+[debug] [2025-04-21T07:57:01.103Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/swampstays-ea444/adminSdkConfig 200
+[debug] [2025-04-21T07:57:01.104Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/swampstays-ea444/adminSdkConfig {"projectId":"swampstays-ea444","databaseURL":"https://swampstays-ea444-default-rtdb.firebaseio.com","storageBucket":"swampstays-ea444.firebasestorage.app"}
+[info] i  functions: Watching "C:\Users\Esthe\OneDrive\Desktop\IntotoSWE\SWE-Project\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\Esthe\\OneDrive\\Desktop\\IntotoSWE\\SWE-Project\\functions\" for Cloud Functions..."}}
+[debug] [2025-04-21T07:57:01.135Z] Validating nodejs source
+[warn] !  functions: Couldn't find firebase-functions package in your source code. Have you run 'npm install'? 
+[debug] [2025-04-21T07:57:01.136Z] getFunctionsSDKVersion encountered error: Cannot find module 'firebase-functions'
+Require stack:
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\versioning.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\index.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\index.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\prepare.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulatorShared.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulator.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\controller.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\commandUtils.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\database-get.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\index.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\index.js
+- C:\Users\Esthe\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js {"code":"MODULE_NOT_FOUND","requireStack":["C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\runtimes\\node\\versioning.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\runtimes\\node\\index.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\runtimes\\index.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\prepare.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\functionsEmulatorShared.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\functionsEmulator.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\controller.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\commandUtils.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\commands\\database-get.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\commands\\index.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\index.js","C:\\Users\\Esthe\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\bin\\firebase.js"]}
+[debug] [2025-04-21T07:57:01.137Z] checkFunctionsSDKVersion encountered error: Invalid Version:  {}
+[debug] [2025-04-21T07:57:01.138Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.1.0",
+    "typescript": "^4.9.0"
+  },
+  "private": true
+}
+[debug] [2025-04-21T07:57:01.140Z] Building nodejs source
+[debug] [2025-04-21T07:57:01.141Z] Failed to find version of module node: reached end of search path C:\Users\Esthe\OneDrive\Desktop\IntotoSWE\SWE-Project\functions\node_modules
+[warn] !  functions: Your requested "node" version "22" doesn't match your global version "20". Using node@20 from host. 
+[debug] [2025-04-21T07:57:01.143Z] Could not parse firebase-functions version '' into semver. Falling back to parseTriggers.
+[info] +  functions: Loaded functions definitions from source: . {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: ."}}
