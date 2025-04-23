@@ -1,0 +1,105 @@
+/* same aesthetic theme with various shades of green throughout website for gator and swamp */
+:root {
+    --jade: #026c55;
+    --jade-dark: #03392b;
+    --white: #ffffff;
+    --light: #f4f9f8;
+    --text: #333;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--light);
+  }
+  
+  .home-wrapper {
+    display: flex;
+    height: 100vh;
+  }
+  /* sidebar has the same characteristics */
+  .sidebar {
+    height: 100vh;
+    width: 240px;
+    background-color: var(--jade);
+    padding: 30px 20px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav-menu a {
+    text-decoration: none;
+    color: var(--white);
+    font-size: 1.1rem;
+    margin: 15px 0;
+    display: block;
+    padding: 10px 15px;
+    border-radius: 15px;
+    transition: background 0.3s;
+  }
+  
+  .nav-menu a:hover {
+    background-color: var(--jade-dark);
+  }
+  
+  /* profile box is white, round, and aesthetically pleasing to the eye, legible */
+  .profile-box {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    width: 60vw;
+    max-width: 900px;
+    text-align: center;
+    color: var(--text);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid var(--jade);
+  }
+  
+  .profile-info {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 2;
+  }
+  
+  /* just like search on home page, hover works the same here */
+  .edit-button {
+    margin-top: 2rem;
+    padding: 10px 20px;
+    background-color: var(--jade);
+    color: var(--white);
+    border: none;
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .edit-button:hover {
+    background-color: var(--jade-dark);
+  }
+  
