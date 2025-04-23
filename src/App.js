@@ -7,6 +7,7 @@ import User from "./Pages/User";
 import Library from "./Pages/Library";
 import Search from "./Pages/Search";
 import { AuthProvider, useAuth } from "./contexts/authContext";
+import Chat from "./Pages/Chat";
 
 function AppContent() {
   const { userLoggedIn, logout } = useAuth();
@@ -40,6 +41,7 @@ function AppContent() {
           <Route path="/register" element={<Register />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/chat/:apartmentId" element={<Chat />} />
           <Route path="/" element={userLoggedIn ? <Navigate to="/home" replace /> : <Login />} />
         </Routes>
       </div>
