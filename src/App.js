@@ -1,56 +1,16 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { useRoutes } from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Header from "./components/header";
-import Home from "./components/home";
+import Home from "./Pages/Home";
 import User from "./Pages/User";
 import Library from "./Pages/Library";
 import Search from "./Pages/Search";
+import { AuthProvider, useAuth } from "./contexts/authContext";
 
-import { AuthProvider } from "./contexts/authContext";
+function AppContent() {
+  const { userLoggedIn, logout } = useAuth();
 
-/*
-function AppRoutes() {
-  const routesArray = [
-    {
-      path: "*",
-      element: <Login />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/register",
-      element: <Register />,
-    },
-    {
-      path: "/home",
-      element: <Home />,
-    },
-  ];
-
-  return useRoutes(routesArray);
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Header />
-        <div className="w-full h-screen flex flex-col">
-          <AppRoutes />
-        </div>
-      </AuthProvider>
-    </BrowserRouter>
-  );
-}
-
-export default App;*/
-
-const App = () => {
   return (
     <Router>
       <div>
@@ -59,6 +19,16 @@ const App = () => {
           <Link to="/search" style={styles.link}>Search</Link>
           <Link to="/user" style={styles.link}>Add Apartment</Link>
           <Link to="/library" style={styles.link}>Saved</Link>
+          {userLoggedIn ? (
+            <button
+              onClick={logout}
+              style={{ ...styles.link, cursor: "pointer" }}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" style={styles.link}>Login</Link>
+          )}
         </nav>
 
         {/* 🔀 Routes */}
@@ -66,10 +36,22 @@ const App = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/user" element={<User />} />
           <Route path="/library" element={<Library />} />
-          <Route path="/" element={<Search />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/signup" element={<Register />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/" element={userLoggedIn ? <Navigate to="/home" replace /> : <Login />} />
         </Routes>
       </div>
     </Router>
+  );
+}
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 

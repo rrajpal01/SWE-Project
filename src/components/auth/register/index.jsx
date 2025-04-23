@@ -2,119 +2,127 @@ import React, { useState } from 'react'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../contexts/authContext'
 import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth'
-import alligator from '../../../assets/gator.png';
-import './SignUp.css';
+import swampBg from '../../../assets/swamp-bg.jpg'
+import alligator from '../../../assets/gator.png'
+import './SignUp.css'
 
 const Register = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
+  const { userLoggedIn } = useAuth()
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setconfirmPassword] = useState('')
-    const [isRegistering, setIsRegistering] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
+  const [firstName, setFirstName]     = useState('')
+  const [lastName, setLastName]       = useState('')
+  const [email, setEmail]             = useState('')
+  const [password, setPassword]       = useState('')
+  const [confirmPassword, setConfirm] = useState('')
+  const [isRegistering, setRegistering] = useState(false)
+  const [errorMessage, setError]        = useState('')
 
-    const { userLoggedIn } = useAuth()
+  const onSubmit = async e => {
+    e.preventDefault()
+    if (isRegistering) return
 
-    const onSubmit = async (e) => {
-        e.preventDefault()
-        if (!isRegistering) {
-            setIsRegistering(true)
-            // Validate email domain
-            if (!email.endsWith('@ufl.edu')) {
-                setErrorMessage('Only @ufl.edu email addresses are allowed')
-                setIsRegistering(false)
-                return
-            }
-            if (password !== confirmPassword) {
-                setErrorMessage('Passwords do not match')
-                setIsRegistering(false)
-                return
-            }
-            try {
-                await doCreateUserWithEmailAndPassword(email, password)
-                navigate('/login')
-            } catch (error) {
-                setErrorMessage(error.message)
-            }
-            setIsRegistering(false)
-        }
+    setRegistering(true)
+    if (!email.endsWith('@ufl.edu')) {
+      setError('Only @ufl.edu email addresses are allowed')
+      setRegistering(false)
+      return
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      setRegistering(false)
+      return
     }
 
-    return (
-        <div className="signup-container">
-            {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
+    try {
+      await doCreateUserWithEmailAndPassword(email, password)
+      navigate('/login')
+    } catch (err) {
+      setError(err.message)
+    }
+    setRegistering(false)
+  }
 
-            <div className="signup-left-panel">
-                <div className="welcome-message">
-                    <h1>Welcome to Swamp Stays</h1>
-                    <h2>Find your perfect stay today!</h2>
-                </div>
-                <img src={alligator} alt="Alligator" className="gator-logo" />
-            </div>
+  if (userLoggedIn) return <Navigate to="/home" replace />
 
-            <div className="signup-right-panel">
-                <div className="signup-form-container">
-                    <h2>Create Account</h2>
-                    <form onSubmit={onSubmit}>
-                        <div className="name-inputs">
-                            <input
-                                type="text"
-                                placeholder="First Name"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="Last Name"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            value={confirmPassword}
-                            onChange={(e) => setconfirmPassword(e.target.value)}
-                            required
-                        />
-                        {errorMessage && (
-                            <div className="error-message">{errorMessage}</div>
-                        )}
-                        <button 
-                            type="submit" 
-                            disabled={isRegistering}
-                            className="create-account-btn"
-                        >
-                            {isRegistering ? 'Signing Up...' : 'Create Account'}
-                        </button>
-                    </form>
-                    <div className="login-link">
-                        Already have an account?{' '}
-                        <Link to={'/login'}>Login</Link>
-                    </div>
-                </div>
+  return (
+    <div className="signup-container">
+      <aside
+        className="signup-left-panel"
+        style={{ backgroundImage: `url(${swampBg})` }}
+      >
+        <h1 className="logo">SwampStays</h1>
+        <nav className="side-nav">
+          <Link to="/profile">Profile</Link>
+          <Link to="/home">Home</Link>
+          <Link to="/find">Find Sublease</Link>
+          <Link to="/add">Add Sublease</Link>
+          <Link to="/messages">Messages</Link>
+        </nav>
+        <img src={alligator} alt="Alligator" className="gator-logo" />
+      </aside>
+
+      <section className="signup-right-panel">
+        <div className="signup-form-container">
+          <h2>Create Account</h2>
+          <form onSubmit={onSubmit}>
+            <div className="name-inputs">
+              <input
+                type="text"
+                placeholder="First Name"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
+                required
+              />
             </div>
+            <input
+              type="email"
+              placeholder="Email (@ufl.edu)"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={e => setConfirm(e.target.value)}
+              required
+            />
+
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
+
+            <button
+              type="submit"
+              className="create-account-btn"
+              disabled={isRegistering}
+            >
+              {isRegistering ? 'Signing Up…' : 'Create Account'}
+            </button>
+          </form>
+          <div className="login-link">
+            Already have an account? <Link to="/login">Login</Link>
+          </div>
         </div>
-    )
+      </section>
+    </div>
+  )
 }
 
 export default Register
