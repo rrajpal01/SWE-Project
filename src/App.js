@@ -1,75 +1,167 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import Login from "./components/auth/login";
-import Register from "./components/auth/register";
-import Header from "./components/header";
-import Home from "./Pages/Home";
-import User from "./Pages/User";
-import Library from "./Pages/Library";
-import Search from "./Pages/Search";
-import { AuthProvider, useAuth } from "./contexts/authContext";
-import Chat from "./Pages/Chat";
+import React, { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  Link
+} from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/authContext';
+import Login from './components/auth/login';
+import Register from './components/auth/register';
+import Home from './Pages/Home';
+import User from './Pages/User';
+import Library from './Pages/Library';
+import Profile from './Pages/Profile';
+import Search from './Pages/Search';
+import Chat from './Pages/Chat';
+import gator from './assets/gator.png';
 
-function AppContent() {
-  const { userLoggedIn, logout } = useAuth();
-
+function App() {
   return (
     <Router>
-      <div>
-        {/* 🌐 Navbar */}
-        <nav style={styles.navbar}>
-          <Link to="/search" style={styles.link}>Search</Link>
-          <Link to="/user" style={styles.link}>Add Apartment</Link>
-          <Link to="/library" style={styles.link}>Saved</Link>
-          {userLoggedIn ? (
-            <button
-              onClick={logout}
-              style={{ ...styles.link, cursor: "pointer" }}
-            >
-              Logout
-            </button>
-          ) : (
-            <Link to="/login" style={styles.link}>Login</Link>
-          )}
-        </nav>
-
-        {/* 🔀 Routes */}
-        <Routes>
-          <Route path="/search" element={<Search />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/signup" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/chat/:apartmentId" element={<Chat />} />
-          <Route path="/" element={userLoggedIn ? <Navigate to="/home" replace /> : <Login />} />
-        </Routes>
-      </div>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
-  );
-};
+function AppContent() {
+  const navigate = useNavigate();
+  const { userLoggedIn, logout } = useAuth();
+  const [showMenu, setShowMenu] = useState(false);
 
-// 🎨 Simple styling
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/home');
+    setShowMenu(v => !v);
+  };
+
+  return (
+    <>
+      <nav style={styles.swampNavbar}>
+        <div style={styles.logoWrapper}>
+          <div onClick={handleLogoClick} style={styles.logoContainer}>
+            <img src={gator} alt="SwampStays" style={styles.logo} />
+            <span style={styles.brandName}>SwampStays</span>
+          </div>
+          {showMenu && (
+            <ul style={styles.dropdown}>
+              <li><Link to="/Profile" style={styles.dropdownItem}>Profile</Link></li>
+              <li><Link to="/chat" style={styles.dropdownItem}>Messages</Link></li>
+              <li><Link to="/library" style={styles.dropdownItem}>Transactions</Link></li>
+            </ul>
+          )}
+        </div>
+
+        <div style={styles.navLinks}>
+          <Link to="/search" style={styles.navLink}>Find a Sublease</Link>
+          <Link to="/user" style={styles.navLink}>Add a Sublease</Link>
+          <Link to="/library" style={styles.navLink}>Favorites</Link>
+          {userLoggedIn ? (
+            <button onClick={handleLogout} style={styles.loginBtn}>
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" style={styles.loginBtn}>Login</Link>
+          )}
+        </div>
+      </nav>
+
+      <Routes>
+        <Route path="/search" element={<Search />} />
+        <Route path="/user" element={<User />} />
+        <Route path="/library" element={<Library />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/signup" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/chat/:apartmentId" element={<Chat />} />
+        <Route
+          path="/"
+          element={
+            userLoggedIn
+              ? <Navigate to="/home" replace />
+              : <Login />
+          }
+        />
+      </Routes>
+    </>
+  );
+}
+
 const styles = {
-  navbar: {
+  swampNavbar: {
     display: 'flex',
-    gap: '20px',
-    padding: '10px 20px',
-    backgroundColor: '#f2f2f2',
-    borderBottom: '1px solid #ccc',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '15px 30px',
+    backgroundColor: 'white',
+    borderBottom: '1px solid #f0f0f0',
+    position: 'relative'
   },
-  link: {
+  logoWrapper: {
+    position: 'relative'
+  },
+  logoContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    userSelect: 'none'
+  },
+  logo: {
+    height: '40px',
+    marginRight: '5px',
+  },
+  brandName: {
+    fontSize: '18px',
+    color: '#333',
+  },
+  dropdown: {
+    listStyle: 'none',
+    margin: 0,
+    padding: '8px 0',
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    background: 'white',
+    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+    borderRadius: '4px',
+    minWidth: '140px'
+  },
+  dropdownItem: {
+    display: 'block',
+    padding: '8px 16px',
     textDecoration: 'none',
     color: '#333',
-    fontWeight: 'bold'
+    fontSize: '14px'
+  },
+  navLinks: {
+    display: 'flex',
+    gap: '20px',
+    alignItems: 'center',
+  },
+  navLink: {
+    textDecoration: 'none',
+    color: '#333',
+    fontSize: '16px',
+  },
+  loginBtn: {
+    backgroundColor: '#c9cdb5',
+    color: '#333',
+    padding: '8px 20px',
+    borderRadius: '4px',
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    fontSize: '16px',
   }
 };
 

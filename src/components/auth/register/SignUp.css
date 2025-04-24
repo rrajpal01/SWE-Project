@@ -1,102 +1,66 @@
-.signup-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-}
-
-.signup-left-panel {
-    background-color: #555c45;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 20px;
-}
-
-.welcome-message {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.welcome-message h1 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
-
-.welcome-message h2 {
-    font-size: 1.2rem;
-}
-
-.gator-logo {
-    width: 200px;
-    height: auto;
-}
-
-.signup-right-panel {
-    width: 60%;
+/* wrapper */
+.signup-page {
+    background: #fff;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
-}
-
-.signup-form-container {
+    padding: 1rem;
+  }
+  
+  /* now main isn’t split into columns, it just houses the form */
+  .signup-main {
     width: 100%;
     max-width: 400px;
-    padding: 20px;
-}
-
-.signup-form-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-}
-
-.name-inputs {
+  }
+  
+  /* form styling unchanged */
+  .form-column h2 {
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    text-align: center;    /* title centered */
+  }
+  
+  .name-inputs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.name-inputs input,
-.signup-form-container input {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .name-inputs input {
+    flex: 1;
+  }
+  
+  input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.create-account-btn {
+    font-size: 1rem;
+  }
+  
+  .error-message {
+    color: #c00;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .create-account-btn {
     width: 100%;
-    padding: 10px;
-    background-color: #2E4057;
+    padding: 0.75rem;
+    background-color: #bbc09f;
     color: white;
+    font-size: 1.1rem;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.create-account-btn:disabled {
-    background-color: #aaa;
-    cursor: not-allowed;
-}
-
-.error-message {
-    color: red;
-    margin-bottom: 15px;
+  }
+  
+  .login-link {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
     text-align: center;
-}
-
-.login-link {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.login-link a {
-    color: #2E4057;
-    text-decoration: none;
-    font-weight: bold;
-}
+  }
+  

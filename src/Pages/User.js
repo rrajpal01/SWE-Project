@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { getDatabase, ref, push, set } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import swampBg from '../assets/swamp-bg.jpg';
+import { useNavigate } from 'react-router-dom';
 
+import './User.css';
 export default function AddApartment() {
   const [username, setUsername] = useState('');
   const [desc, setDesc] = useState('');
-  const [rentP, setRentP] = useState('');
+  const [venmo, setVenmo] = useState('');
+  const [period, setPeriod] = useState('');
   const [cost, setCost] = useState('');
   const [pics, setPics] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const auth = getAuth();
@@ -35,111 +38,97 @@ export default function AddApartment() {
   const handleSubmit = e => {
     e.preventDefault();
     const db = getDatabase();
+    const auth = getAuth();
+    if (!auth.currentUser) return alert('Please Log in First.');
     const newRef = push(ref(db, 'apartments'));
     set(newRef, {
+      ownerId:       auth.currentUser.uid,
       username,
       description: desc,
-      rentalPeriod: rentP,
+      venmoUsername: venmo,
+      rentalPeriod: period,
       costPerMonth: cost,
       pictures: pics,
     })
       .then(() => {
         alert('Apartment info saved!');
         setDesc('');
-        setRentP('');
+        setVenmo('');
+        setPeriod('');
         setCost('');
         setPics('');
+        navigate('/find');
       })
       .catch(console.error);
   };
 
   return (
-    <div className="flex h-screen">
-      {/* Left sidebar */}
-      <aside
-        className="w-1/3 bg-cover bg-center p-8 text-white flex flex-col"
-        style={{ backgroundImage: `url(${swampBg})` }}
-      >
-        <h1 className="text-4xl font-bold mb-8">SwampStays</h1>
-        <nav className="flex-1">
-          <ul className="space-y-4 text-lg">
-            <li>Profile</li>
-            <li>Home</li>
-            <li>Find Sublease</li>
-            <li className="underline">Add Sublease</li>
-            <li>Messages</li>
-          </ul>
-        </nav>
-      </aside>
+    <div className="add-apt-page">
+      <form className="add-apt-form" onSubmit={handleSubmit}>
+        <h1 className="add-apt-title">Add Apartment</h1>
 
-      {/* Right form area */}
-      <main className="flex-1 bg-gray-50 p-12 overflow-auto">
-        <h2 className="text-5xl font-bold mb-8 text-gray-900">Add Apartment</h2>
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Description */}
-          <div>
-            <label className="block text-gray-700 mb-2">Description</label>
-            <textarea
+        <fieldset className="add-apt-field">
+          <legend>Description</legend>
+          <textarea
+            required
+            value={desc}
+            onChange={e => setDesc(e.target.value)}
+            placeholder="Describe the apartment…"
+          />
+        </fieldset>
+
+        <div className="add-apt-row">
+          <fieldset className="add-apt-field small">
+            <legend>Venmo Username</legend>
+            <input
               required
-              className="w-full border border-gray-300 rounded-lg p-4 h-32 resize-none"
-              placeholder="Describe the apartment…"
-              value={desc}
-              onChange={e => setDesc(e.target.value)}
+              type="text"
+              value={venmo}
+              onChange={e => setVenmo(e.target.value)}
+              placeholder="@username"
             />
-          </div>
+          </fieldset>
+          <fieldset className="add-apt-field small">
+            <legend>Rental Period</legend>
+            <input
+              required
+              type="text"
+              value={period}
+              onChange={e => setPeriod(e.target.value)}
+              placeholder="e.g. Jan–May"
+            />
+          </fieldset>
+          <fieldset className="add-apt-field small">
+            <legend>Cost per Month</legend>
+            <input
+              required
+              type="number"
+              value={cost}
+              onChange={e => setCost(e.target.value)}
+              placeholder="$"
+            />
+          </fieldset>
+        </div>
 
-          {/* Rental & Cost */}
-          <div className="flex gap-6">
-            <div className="flex-1">
-              <label className="block text-gray-700 mb-2">Rental Period</label>
-              <input
-                type="text"
-                required
-                className="w-full border border-gray-300 rounded-lg p-3"
-                placeholder="e.g. Jan – May"
-                value={rentP}
-                onChange={e => setRentP(e.target.value)}
-              />
-            </div>
-            <div className="flex-1">
-              <label className="block text-gray-700 mb-2">Cost per Month</label>
-              <input
-                type="number"
-                required
-                className="w-full border border-gray-300 rounded-lg p-3"
-                placeholder="$"
-                value={cost}
-                onChange={e => setCost(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Image Upload */}
-          <div>
-            <label className="block text-gray-700 mb-2">Add Images</label>
+        <fieldset className="add-apt-field">
+          <legend>Add Images</legend>
+          <label className="add-apt-dropzone">
             <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
             />
-            {pics && (
-              <img
-                src={pics}
-                alt="Preview"
-                className="mt-4 w-40 h-32 object-cover rounded-md"
-              />
-            )}
-          </div>
+            {pics
+              ? <img src={pics} alt="preview" className="preview"/>
+              : <span>Click or drag to upload</span>
+            }
+          </label>
+        </fieldset>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-gray-800 text-white py-4 rounded-lg text-lg font-semibold hover:bg-gray-700"
-          >
-            Submit
-          </button>
-        </form>
-      </main>
+        <button type="submit" className="add-apt-submit">
+          Submit
+        </button>
+      </form>
     </div>
   );
 }

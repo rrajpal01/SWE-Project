@@ -1,110 +1,72 @@
+// Library.jsx
 import React, { useEffect, useState } from 'react';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import './Library.css';
 
 const Library = () => {
   const [savedList, setSavedList] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const auth = getAuth();
-    const user = auth.currentUser;
+    const user = getAuth().currentUser;
     if (!user) return;
-
-    const db = getDatabase();
-    const savedRef = ref(db, `savedApartments/${user.uid}`);
-
-    const unsubscribe = onValue(savedRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const apartmentsArray = Object.entries(data).map(([id, value]) => ({
-          id,
-          ...value
-        }));
-        setSavedList(apartmentsArray);
-      } else {
-        setSavedList([]);
-      }
+    const savedRef = ref(getDatabase(), `savedApartments/${user.uid}`);
+    const unsubscribe = onValue(savedRef, snap => {
+      const data = snap.val() || {};
+      setSavedList(
+        Object.entries(data).map(([id, val]) => ({ id, ...val }))
+      );
     });
-
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
-  const handleMessage = (apt) => {
-    // If no ownerId, use current user's ID as fallback
-    const auth = getAuth();
-    const ownerId = apt.ownerId || auth.currentUser.uid;
-    
-    // Navigate to chat screen with apartment owner
+  const handleMessage = apt => {
+    const ownerId = apt.ownerId || getAuth().currentUser.uid;
     navigate(`/chat/${apt.id}`, {
       state: {
         recipientId: ownerId,
         apartmentId: apt.id,
-        apartmentName: apt.Description
+        apartmentName: apt.description
       }
     });
   };
 
-  const handleRent = (apt) => {
+  const handleRent = apt => {
     const amount = apt.costPerMonth;
-    // customize this to the actual Venmo username or list of recipients:
-    const recipients = 'PROPERTY_OWNER_VENMO_USERNAME';
-    const note = encodeURIComponent(`Rent for ${apt.Description}`);
-
-    // deep-link into the Venmo app
-    const venmoLink = `venmo://paycharge?txn=pay&recipients=${recipients}&amount=${amount}&note=${note}`;
-    // fallback to the web flow if app not installed
-    const webLink   = `https://venmo.com/${recipients}?txn=pay&amount=${amount}&note=${note}`;
-
-    // try app first…
-    window.location.href = venmoLink;
-    // …then after a short delay fall back to web
-    setTimeout(() => window.open(webLink, '_blank'), 500);
+    let user = (apt.venmoUsername || '').replace(/^@/, '');
+    const webUrl   = `https://venmo.com/${user}?txn=pay&amount=${amount}`;
+    window.open(webUrl, '_blank');
+    
   };
 
   return (
-    <div>
-      <h2>My Saved Apartments</h2>
+    <div className="library-container">
+      <h2 className="library-title">My Saved Apartments</h2>
       {savedList.length === 0 ? (
         <p>No apartments saved yet.</p>
-      ) : (
-        savedList.map((apt) => (
+      ) : savedList.map(apt => (
+        <div className="apartment-card" key={apt.id}>
           <div
-            key={apt.id}
-            className="apartment-card"
-            style={{ border: '1px solid #ddd', padding: 16, marginBottom: 16 }}
-          >
-            <h3>{apt.Description}</h3>
-            <p>Rent: ${apt.costPerMonth}/mo</p>
-            <p>Rental Period: {apt.rentalPeriod}</p>
-            {apt.Pictures && (
-              <img
-                src={apt.Pictures}
-                alt="Apartment"
-                width="150"
-                style={{ display: 'block', marginBottom: 8 }}
-              />
-            )}
-            <div className="apartment-actions" style={{ display: 'flex', gap: 8 }}>
-              <button
-                type="button"
-                onClick={() => handleMessage(apt)}
-                style={{ padding: '8px 12px', cursor: 'pointer' }}
-              >
-                Message
-              </button>
-              <button
-                type="button"
-                onClick={() => handleRent(apt)}
-                style={{ padding: '8px 12px', cursor: 'pointer' }}
-              >
+            className="apartment-image"
+            style={{ backgroundImage: `url(${apt.pictures})` }}
+          />
+          <div className="apartment-info">
+            {/* Make sure your Firebase field is named “Description” (capital “D”) */}
+            <h3>{apt.description}</h3>
+            <p><strong>Rent:</strong> ${apt.costPerMonth}</p>
+            <div className="apartment-actions">
+              <button className="rent-btn"    onClick={() => handleRent(apt)}>
                 Rent
+              </button>
+              <button className="message-btn" onClick={() => handleMessage(apt)}>
+                Message
               </button>
             </div>
           </div>
-        ))
-      )}
+        </div>
+      ))}
     </div>
   );
 };

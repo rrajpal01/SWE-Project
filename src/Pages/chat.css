@@ -1,155 +1,140 @@
-/* Citation of Firebase + Fireship UI template */
+/* chat.css */
 
-body {
-    background-color: #4ba081;
-  }
-  
-  .App {
-    text-align: center;
-    max-width: 728px;
-    margin: 0 auto;
-  }
-  
-  .App header {
-    background-color: #181717;
-    height: 10vh;
-    min-height: 50px;
-    color: white;
-    position: fixed;
-    width: 100%;
-    max-width: 728px;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 99;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  .App section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: rgb(13, 61, 9);
-  }
-  
-  main {
-    padding: 10px;
-    height: 80vh;
-    margin: 10vh 0 10vh;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  main::-webkit-scrollbar {
-    width: 0.25rem;
-  }
-  
-  main::-webkit-scrollbar-track {
-    background: #1e1e24;
-  }
-  
-  main::-webkit-scrollbar-thumb {
-    background: #6649b8;
-  }
-  
-  form {
-    height: 10vh;
-    position: fixed;
-    bottom: 0;
-    background-color: rgb(24, 23, 23);
-    width: 100%;
-    max-width: 728px;
-    display: flex;
-    font-size: 1.5rem;
-  }
-  
-  form button {
-    width: 20%;
-    background-color: rgb(56, 56, 143);
-  }
-  
-  
-  input {
-    line-height: 1.5;
-    width: 100%;
-    font-size: 1.5rem;
-    background: rgb(25, 49, 32);
-    color: white;
-    outline: none;
-    border: none;
-    padding: 0 10px;
-  }
-  
-  button {
-    background-color: #282c34; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-    font-size: 1.25rem;
-  }
-  
-  button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  
-  
-  .sign-in {
-    color: #282c34;
-    background: white;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-/* Design for message bubbles and text message */
-  
-  ul, li {
-    text-align: left;
-    list-style: none;
-  }
-  
-  p {
-    max-width: 500px;
-    margin-bottom: 12px;
-    line-height: 24px;
-    padding: 10px 20px;
-    border-radius: 25px;
-    position: relative;
-    color: white;
-    text-align: center;
-  }
-  
-  .message {
-    display: flex;
-    align-items: center;
-  }
-  
-  
-  .sent {
-    flex-direction: row-reverse;
-  }
-  
-  .sent p {
-    color: white;
-    background: #0b93f6;
-    align-self: flex-end;
-  }
-  .received p {
-    background: #e5e5ea;
-    color: black;
-  }
-  
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin: 2px 5px;
-  }
+/* Container “card” */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #f5f7fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Sticky header */
+.chat-header {
+  position: sticky;
+  top: 0;
+  background: #4ba081;        /* changed */
+  color: white;
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+/* Message area */
+.chat-main {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #fff;
+}
+
+/* Scrollbar styling */
+.chat-main::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-main::-webkit-scrollbar-track {
+  background: #e1e5ea;
+  border-radius: 4px;
+}
+.chat-main::-webkit-scrollbar-thumb {
+  background: #b0b8c1;
+  border-radius: 4px;
+}
+
+/* Individual message */
+.chat-message {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Sent vs received */
+.chat-message.sent {
+  justify-content: flex-end;
+}
+.chat-message.received {
+  justify-content: flex-start;
+}
+
+/* Avatar */
+.chat-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 0.5rem;
+}
+
+/* Message bubble */
+.chat-bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 20px;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Bubble colors */
+.chat-message.sent .chat-bubble {
+  background: #4ba081;        /* changed */
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.chat-message.received .chat-bubble {
+  background: #e5e5ea;
+  color: #333;
+  border-bottom-left-radius: 4px;
+}
+
+/* Sticky input area */
+.chat-form {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  padding: 0.75rem;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  gap: 0.5rem;
+}
+
+/* Text input */
+.chat-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color .2s;
+}
+.chat-input:focus {
+  border-color: #4ba081;      /* changed */
+}
+
+/* Send button */
+.chat-send-button {
+  padding: 0 1.25rem;
+  font-size: 1rem;
+  background: #4ba081;        /* changed */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background .2s;
+}
+.chat-send-button:hover:not(:disabled) {
+  background: #3d8c6e;        /* darker green hover */
+}
+.chat-send-button:disabled {
+  background: #a6cfbf;        /* light green disabled */
+  cursor: not-allowed;
+}
