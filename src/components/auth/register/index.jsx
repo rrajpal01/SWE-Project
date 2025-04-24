@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../contexts/authContext'
 import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth'
-import swampBg from '../../../assets/swamp-bg.jpg'
 import alligator from '../../../assets/gator.png'
 import './SignUp.css'
 
@@ -46,24 +45,9 @@ const Register = () => {
   if (userLoggedIn) return <Navigate to="/home" replace />
 
   return (
-    <div className="signup-container">
-      <aside
-        className="signup-left-panel"
-        style={{ backgroundImage: `url(${swampBg})` }}
-      >
-        <h1 className="logo">SwampStays</h1>
-        <nav className="side-nav">
-          <Link to="/profile">Profile</Link>
-          <Link to="/home">Home</Link>
-          <Link to="/find">Find Sublease</Link>
-          <Link to="/add">Add Sublease</Link>
-          <Link to="/messages">Messages</Link>
-        </nav>
-        <img src={alligator} alt="Alligator" className="gator-logo" />
-      </aside>
-
-      <section className="signup-right-panel">
-        <div className="signup-form-container">
+    <div className="signup-page">
+      <main className="signup-main">
+        <div className="form-column">
           <h2>Create Account</h2>
           <form onSubmit={onSubmit}>
             <div className="name-inputs">
@@ -120,7 +104,11 @@ const Register = () => {
             Already have an account? <Link to="/login">Login</Link>
           </div>
         </div>
-      </section>
+
+        <div className="image-column">
+          <img src={alligator} alt="Alligator" />
+        </div>
+      </main>
     </div>
   )
 }

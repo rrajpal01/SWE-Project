@@ -1,8 +1,8 @@
+// src/components/Chat.jsx
 import React, { useRef, useState, useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import './chat.css';
 import {
   collection,
   query,
@@ -12,43 +12,34 @@ import {
   serverTimestamp
 } from 'firebase/firestore';
 import { auth, firestore } from '../firebase/firebase';
+import './chat.css';
 
-function Chat() {
-  // 🔸 Hooks must be at top-level:
+export default function Chat() {
   const location = useLocation();
   const { recipientId, apartmentId, apartmentName } = location.state || {};
   const [user] = useAuthState(auth);
   const dummy = useRef();
 
-  // build your messages query (always valid, falls back to "general")
   const roomId = apartmentId || 'general';
   const messagesRef = collection(firestore, 'chats', roomId, 'messages');
   const q = query(messagesRef, orderBy('createdAt'), limit(25));
-
-  // fetch messages
   const [messages] = useCollectionData(q, { idField: 'id' });
 
-  // form state
   const [formValue, setFormValue] = useState('');
 
-  // auto-scroll on new messages
   useEffect(() => {
     if (dummy.current) {
       dummy.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
-  // 🔸 Now that hooks have all run, handle the edge cases:
   if (!user) {
-    // if logged out, redirect
     return <Navigate to="/login" replace />;
   }
   if (!recipientId && !apartmentId && !apartmentName) {
-    // missing chat params
-    return <div>Invalid chat parameters</div>;
+    return <div className="chat-error">Invalid chat parameters</div>;
   }
 
-  // 🔸 send message handler
   const sendMessage = async (e) => {
     e.preventDefault();
     const text = formValue.trim();
@@ -68,12 +59,12 @@ function Chat() {
 
   return (
     <div className="chat-container">
-      <header>
-        <h2>Chat with {apartmentName || 'General Chat'}</h2>
-        <p>Apartment ID: {roomId}</p>
+      <header className="chat-header">
+        <h2 className="chat-title">Chat with {apartmentName || 'General Chat'}</h2>
+        <p className="chat-room">Apartment ID: {roomId}</p>
       </header>
 
-      <main>
+      <main className="chat-main">
         {messages?.map((msg) => (
           <ChatMessage
             key={msg.id}
@@ -84,13 +75,18 @@ function Chat() {
         <span ref={dummy}></span>
       </main>
 
-      <form onSubmit={sendMessage}>
+      <form className="chat-form" onSubmit={sendMessage}>
         <input
+          className="chat-input"
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           placeholder="Type a message…"
         />
-        <button type="submit" disabled={!formValue.trim()}>
+        <button
+          className="chat-send-button"
+          type="submit"
+          disabled={!formValue.trim()}
+        >
           Send
         </button>
       </form>
@@ -101,9 +97,10 @@ function Chat() {
 function ChatMessage({ message, isSender }) {
   const { text, senderPhotoURL } = message;
   return (
-    <div className={`message ${isSender ? 'sent' : 'received'}`}>
+    <div className={`chat-message ${isSender ? 'sent' : 'received'}`}>
       {!isSender && (
         <img
+          className="chat-avatar"
           src={
             senderPhotoURL ||
             'https://api.adorable.io/avatars/23/abott@adorable.png'
@@ -111,9 +108,7 @@ function ChatMessage({ message, isSender }) {
           alt="avatar"
         />
       )}
-      <p>{text}</p>
+      <p className="chat-bubble">{text}</p>
     </div>
   );
 }
-
-export default Chat;

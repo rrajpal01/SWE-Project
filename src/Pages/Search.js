@@ -1,103 +1,99 @@
 import React, { useEffect, useState } from 'react';
-import { getDatabase, ref, onValue, set as firebaseSet } from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  set as firebaseSet
+} from 'firebase/database';
 import { getAuth } from 'firebase/auth';
+import './Search.css';
 
-const Search = () => {
+export default function Search() {
   const [apartments, setApartments] = useState([]);
 
   useEffect(() => {
     const db = getDatabase();
     const apartmentsRef = ref(db, 'apartments');
-
-    const unsubscribe = onValue(apartmentsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const apartmentArray = Object.entries(data).map(([id, value]) => ({
-          id,
-          ...value,
-        }));
-        setApartments(apartmentArray);
-      } else {
-        setApartments([]);
-      }
+    const unsubscribe = onValue(apartmentsRef, snap => {
+      const data = snap.val();
+      setApartments(
+        data
+          ? Object.entries(data).map(([id, val]) => ({ id, ...val }))
+          : []
+      );
     });
-
-    return () => unsubscribe();
+    return unsubscribe;
   }, []);
 
-  const handleSave = (apartment) => {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
+  const handleSave = apt => {
+    const user = getAuth().currentUser;
     if (!user) {
-      alert("You must be logged in to save apartments.");
-      return;
+      return alert("You must be logged in to save apartments.");
     }
-
     const db = getDatabase();
-    const savedRef = ref(db, `savedApartments/${user.uid}/${apartment.id}`);
-
-    firebaseSet(savedRef, apartment)
+    const savedRef = ref(db, `savedApartments/${user.uid}/${apt.id}`);
+    firebaseSet(savedRef, apt)
       .then(() => alert("Apartment saved to your library!"))
-      .catch((error) => console.error("Save failed:", error));
+      .catch(console.error);
+  };
+
+  const handleRent = apt => {
+    const amount = apt.costPerMonth;
+    const user   = (apt.venmoUsername || '').replace(/^@/, '');
+    const url    = `https://venmo.com/${user}?txn=pay&amount=${amount}`;
+    window.open(url, '_blank');
   };
 
   return (
-    <div>
-      {/* Hero Section */}
-      <div
-        className="w-full h-[400px] bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: `url('/swamp-bg.jpg')` }}
-      >
-        <div className="text-white text-center">
-          <h1 className="text-4xl font-bold drop-shadow-lg">Swamp Stays</h1>
-          <p className="mt-2 text-lg drop-shadow-md">Find subleased apartments easily</p>
-        </div>
-      </div>
-
-      {/* Apartment Listings */}
-      <div className="max-w-6xl mx-auto px-4 py-10">
-        <h2 className="text-3xl font-bold mb-8">Browse Available Apartments</h2>
+    <div className="search-page">
+      <div className="search-container">
+        <h2 className="search-title">Browse available apartments</h2>
 
         {apartments.length === 0 ? (
-          <p className="text-gray-500">No apartments available.</p>
+          <p className="no-apts">No apartments available.</p>
         ) : (
-          apartments.map((apt) => (
-            <div
-              key={apt.id}
-              className="flex flex-col md:flex-row items-start gap-6 mb-10 border-b pb-6"
-            >
-              <img
-                src={apt.Pictures}
-                alt="Apartment"
-                className="w-full md:w-64 h-48 object-cover rounded-md shadow"
-              />
-              <div className="flex-1">
-                <h3 className="text-xl font-semibold">{apt.Description}</h3>
-                <p className="text-gray-700 mt-1">
-                  Rent: <strong>${apt.costPerMonth}/mo</strong>
-                </p>
-                <p className="text-gray-700 mb-3">
-                  Rental Period: {apt.rentalPeriod}
-                </p>
-                <div className="flex gap-3">
-                  <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
-                    More...
+          apartments.map(apt => (
+            <div key={apt.id} className="apt-card">
+              <div className="apt-info">
+                {/* description + rental period */}
+                <div>
+                  <h3>{apt.description}</h3>
+                  <p className="rental-period">
+                    Rental Period: {apt.rentalPeriod}
+                  </p>
+                </div>
+
+                {/* rent button + favorites */}
+                <div className="apt-controls">
+                  <button
+                    className="price-btn"
+                    onClick={() => handleRent(apt)}
+                  >
+                    ${apt.costPerMonth}/mo
                   </button>
                   <button
-                    className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
                     onClick={() => handleSave(apt)}
+                    className="save-btn"
                   >
-                    Add to Library
+                    Add to Favorites
                   </button>
                 </div>
               </div>
+
+              {/* image */}
+              {apt.pictures && (
+                <div className="apt-image-wrap">
+                  <img
+                    src={apt.pictures}
+                    alt={apt.description || "Apartment"}
+                    className="apt-image"
+                  />
+                </div>
+              )}
             </div>
           ))
         )}
       </div>
     </div>
   );
-};
-
-export default Search;
+}

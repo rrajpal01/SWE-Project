@@ -1,7 +1,7 @@
 import React from 'react';
 import './Profile.css';
-import gator_front from './assets/gator_front.jpg';
-import swamp from './assets/swamp-bg.jpg';
+import gator_front from '../assets/gator_front.jpg';
+import swamp from '../assets/swamp-bg.jpg';
 
 function Profile() {
   return (
@@ -20,23 +20,11 @@ function Profile() {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         padding: '2rem'
       }}
     >
-      <aside className="sidebar">
-        <h1 className="logo">SwampStays</h1>
-        <nav className="nav-menu">
-          <a href="#">Home</a>
-          <a href="#">Search</a>
-          <a href="#">Messages</a>
-          <a href="#">Notifications</a>
-          <a href="#">Profile</a>
-          <a href="#">Add Sublease</a>
-          <a href="#">Transactions</a>
 
-        </nav>
-      </aside>
 
       <div className="main-box profile-box">
         <img src={gator_front} alt="User Avatar" className="profile-avatar" />
