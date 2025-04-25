@@ -16,6 +16,9 @@ import Library from './Pages/Library';
 import Profile from './Pages/Profile';
 import Search from './Pages/Search';
 import Chat from './Pages/Chat';
+import Messaging from './Pages/Messaging';
+import UserListings from './Pages/UserListings';
+import Transactions from './Pages/Transactions';
 import gator from './assets/gator.png';
 
 function App() {
@@ -39,8 +42,10 @@ function AppContent() {
   };
 
   const handleLogoClick = () => {
+    if (userLoggedIn) {
+      setShowMenu(v => !v);
+    }
     navigate('/home');
-    setShowMenu(v => !v);
   };
 
   return (
@@ -51,25 +56,66 @@ function AppContent() {
             <img src={gator} alt="SwampStays" style={styles.logo} />
             <span style={styles.brandName}>SwampStays</span>
           </div>
-          {showMenu && (
+          {userLoggedIn && showMenu && (
             <ul style={styles.dropdown}>
-              <li><Link to="/Profile" style={styles.dropdownItem}>Profile</Link></li>
-              <li><Link to="/chat" style={styles.dropdownItem}>Messages</Link></li>
-              <li><Link to="/library" style={styles.dropdownItem}>Transactions</Link></li>
+              <li>
+                <Link
+                  to="/profile"
+                  style={styles.dropdownItem}
+                  onClick={() => setShowMenu(false)}
+                >
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/messaging"
+                  style={styles.dropdownItem}
+                  onClick={() => setShowMenu(false)}
+                >
+                  Messages
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/transactions"
+                  style={styles.dropdownItem}
+                  onClick={() => setShowMenu(false)}
+                >
+                  Transactions
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/userListings"
+                  style={styles.dropdownItem}
+                  onClick={() => setShowMenu(false)}
+                >
+                  Your Listings
+                </Link>
+              </li>
             </ul>
           )}
         </div>
 
         <div style={styles.navLinks}>
-          <Link to="/search" style={styles.navLink}>Find a Sublease</Link>
-          <Link to="/user" style={styles.navLink}>Add a Sublease</Link>
-          <Link to="/library" style={styles.navLink}>Favorites</Link>
+          <Link to="/search" style={styles.navLink}>
+            Find a Sublease
+          </Link>
+          <Link to="/user" style={styles.navLink}>
+            Add a Sublease
+          </Link>
+          <Link to="/library" style={styles.navLink}>
+            Favorites
+          </Link>
           {userLoggedIn ? (
             <button onClick={handleLogout} style={styles.loginBtn}>
               Logout
             </button>
           ) : (
-            <Link to="/login" style={styles.loginBtn}>Login</Link>
+            <Link to="/login" style={styles.loginBtn}>
+              Login
+            </Link>
           )}
         </div>
       </nav>
@@ -83,13 +129,14 @@ function AppContent() {
         <Route path="/signup" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/chat/:apartmentId" element={<Chat />} />
+        <Route path="/chat/:userId" element={<Chat />} />
+        <Route path="/messaging" element={<Messaging />} />
+        <Route path="/userListings" element={<UserListings />} />
+        <Route path="/transactions" element={<Transactions />} />
         <Route
           path="/"
           element={
-            userLoggedIn
-              ? <Navigate to="/home" replace />
-              : <Login />
+            userLoggedIn ? <Navigate to="/home" replace /> : <Login />
           }
         />
       </Routes>
@@ -118,11 +165,11 @@ const styles = {
   },
   logo: {
     height: '40px',
-    marginRight: '5px',
+    marginRight: '5px'
   },
   brandName: {
     fontSize: '18px',
-    color: '#333',
+    color: '#333'
   },
   dropdown: {
     listStyle: 'none',
@@ -146,12 +193,12 @@ const styles = {
   navLinks: {
     display: 'flex',
     gap: '20px',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   navLink: {
     textDecoration: 'none',
     color: '#333',
-    fontSize: '16px',
+    fontSize: '16px'
   },
   loginBtn: {
     backgroundColor: '#c9cdb5',
@@ -161,7 +208,7 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'none',
-    fontSize: '16px',
+    fontSize: '16px'
   }
 };
 

@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../contexts/authContext'
 import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth'
-import alligator from '../../../assets/gator.png'
+import { getDatabase, ref, set } from 'firebase/database'
+import { getAuth } from 'firebase/auth'
+// import alligator from '../../../assets/gator.png'
 import './SignUp.css'
 
 const Register = () => {
@@ -22,6 +24,8 @@ const Register = () => {
     if (isRegistering) return
 
     setRegistering(true)
+    setError('')
+
     if (!email.endsWith('@ufl.edu')) {
       setError('Only @ufl.edu email addresses are allowed')
       setRegistering(false)
@@ -34,11 +38,24 @@ const Register = () => {
     }
 
     try {
-      await doCreateUserWithEmailAndPassword(email, password)
+      // Create user in Firebase Auth
+      const userCredential = await doCreateUserWithEmailAndPassword(email, password)
+      const { user } = userCredential
+
+      // Write user profile to Realtime Database
+      const db = getDatabase()
+      await set(ref(db, `users/${user.uid}`), {
+        firstName,
+        lastName,
+        email
+      })
+
+      // Redirect to login
       navigate('/login')
     } catch (err) {
       setError(err.message)
     }
+
     setRegistering(false)
   }
 
@@ -106,7 +123,7 @@ const Register = () => {
         </div>
 
         <div className="image-column">
-          <img src={alligator} alt="Alligator" />
+          {/* <img src={alligator} alt="Alligator" /> */}
         </div>
       </main>
     </div>

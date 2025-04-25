@@ -1,0 +1,116 @@
+/* YourListings.css */
+
+/* page background */
+.your-listings-page {
+    background-color: #f4f9f8;
+    padding: 2rem;
+    min-height: 100vh;
+  }
+  
+  /* title */
+  .your-listings-page .listings-title {
+    font-size: 2rem;
+    color: #a3b18a;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+  
+  /* list reset */
+  .your-listings-page ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* each card */
+  .your-listings-page .listing-card {
+    display: flex;
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    max-width: 900px;
+    width: 100%;
+    align-items: center;
+  }
+  
+  /* left: image */
+  .your-listings-page .listing-image {
+    flex: 1 1 40%;
+    background-size: cover;
+    background-position: center;
+    min-height: 200px;
+  }
+  
+  /* right: details */
+  .your-listings-page .listing-details {
+    flex: 1 1 60%;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* description & price */
+  .your-listings-page .listing-details .listing-info h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #111;
+  }
+  .your-listings-page .listing-details .listing-info p {
+    margin: 0.5rem 0 1rem;
+    color: #444;
+  }
+  
+  /* button row */
+  .your-listings-page .listing-buttons {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .your-listings-page .listing-buttons button {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  /* primary “Edit” button */
+  .your-listings-page .btn-edit {
+    background: #000;
+    color: #fff;
+  }
+  .your-listings-page .btn-edit:hover {
+    background: #333;
+  }
+  
+  /* secondary “Cancel” button */
+  .your-listings-page .btn-cancel {
+    background: #f5f5f5;
+    color: #111;
+    border: 1px solid #ddd;
+  }
+  .your-listings-page .btn-cancel:hover {
+    background: #ececec;
+  }
+  
+  /* responsive: stack on small screens */
+  @media (max-width: 768px) {
+    .your-listings-page .listing-card {
+      flex-direction: column;
+    }
+    .your-listings-page .listing-image {
+      width: 100%;
+      min-height: 180px;
+    }
+    .your-listings-page .listing-details {
+      padding: 1rem;
+    }
+  }
+  

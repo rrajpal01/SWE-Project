@@ -1,66 +1,71 @@
 /* wrapper */
 .signup-page {
-    background: #fff;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-  }
-  
-  /* now main isn’t split into columns, it just houses the form */
-  .signup-main {
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  /* form styling unchanged */
-  .form-column h2 {
-    margin-bottom: 1rem;
-    font-size: 1.75rem;
-    text-align: center;    /* title centered */
-  }
-  
-  .name-inputs {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .name-inputs input {
-    flex: 1;
-  }
-  
-  input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .error-message {
-    color: #c00;
-    margin-bottom: 0.75rem;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-  
-  .create-account-btn {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #bbc09f;
-    color: white;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .login-link {
-    margin-top: 0.75rem;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-  
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.signup-main {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+/* form title */
+.signup-main h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+/* lay out the form in a single column */
+.signup-main form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* name fields go in two equal columns */
+.name-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* base styling for every input */
+.signup-main input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 3.5rem;           /* fixed height for consistency */
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* button matches the inputs exactly */
+.create-account-btn {
+  box-sizing: border-box;
+  width: 100%;
+  height: 3.5rem;
+  margin-top: 0.5rem;
+  background-color: #bbc09f;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* login link below the button */
+.login-link {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  text-align: center;
+}

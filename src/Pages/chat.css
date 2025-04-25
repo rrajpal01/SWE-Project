@@ -1,11 +1,13 @@
 /* chat.css */
 
 /* Container “card” */
+/* Container “card” */
 .chat-container {
   display: flex;
   flex-direction: column;
   height: 90vh;
-  max-width: 600px;
+  width: 90vw;           /* new – fills 90% of viewport width */
+  max-width: 1200px;     /* new – won’t exceed 1,200px */
   margin: 2rem auto;
   background: #f5f7fa;
   border-radius: 12px;
@@ -13,6 +15,7 @@
   overflow: hidden;
   font-family: 'Segoe UI', Roboto, sans-serif;
 }
+
 
 /* Sticky header */
 .chat-header {
@@ -66,13 +69,14 @@
 }
 
 /* Avatar */
-.chat-avatar {
-  width: 32px;
-  height: 32px;
+.profile-avatar {
+  width: 20px;       /* smaller */
+  height: 20px;      /* smaller */
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 0.5rem;
+  margin: 0 0.25rem; /* adjust spacing */
 }
+
 
 /* Message bubble */
 .chat-bubble {
