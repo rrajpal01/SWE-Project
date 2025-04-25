@@ -57,7 +57,7 @@ export default function AddApartment() {
         setPeriod('');
         setCost('');
         setPics('');
-        navigate('/find');
+        navigate('/');
       })
       .catch(console.error);
   };

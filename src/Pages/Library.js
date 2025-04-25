@@ -22,16 +22,19 @@ const Library = () => {
     return unsubscribe;
   }, []);
 
-  const handleMessage = apt => {
-    const ownerId = apt.ownerId || getAuth().currentUser.uid;
+  const handleMessage = (apt) => {
+    // this is your “targetUserUid”
+    const targetUserUid = apt.ownerId
+  
     navigate(`/chat/${apt.id}`, {
       state: {
-        recipientId: ownerId,
-        apartmentId: apt.id,
-        apartmentName: apt.description
+        recipientId:   targetUserUid,
+        apartmentId:   apt.id,
+        apartmentName: apt.description,
       }
-    });
-  };
+    })
+  }
+  
 
   const handleRent = apt => {
     const amount = apt.costPerMonth;

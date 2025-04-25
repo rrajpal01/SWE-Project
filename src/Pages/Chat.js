@@ -9,49 +9,100 @@ import {
   orderBy,
   limit,
   addDoc,
-  serverTimestamp
+  serverTimestamp,
+  doc,
+  setDoc,
+  getDoc
 } from 'firebase/firestore';
 import { auth, firestore } from '../firebase/firebase';
+import { getDatabase, ref as rtdbRef, get as rtdbGet } from 'firebase/database';
+// import pfp from '../assets/pfp.png';    // ← import your avatar
 import './chat.css';
 
-export default function Chat() {
-  const location = useLocation();
-  const { recipientId, apartmentId, apartmentName } = location.state || {};
+export default function Chat({
+  recipientId: propRecipientId,
+  threadId:    propThreadId,
+  threadName:  propThreadName
+}) {
+  const { state } = useLocation();
   const [user] = useAuthState(auth);
-  const dummy = useRef();
 
-  const roomId = apartmentId || 'general';
-  const messagesRef = collection(firestore, 'chats', roomId, 'messages');
-  const q = query(messagesRef, orderBy('createdAt'), limit(25));
+  const recipientId = propRecipientId ?? state?.recipientId;
+  const roomId      = propThreadId    ?? state?.threadId;
+  const threadName  = propThreadName  ?? state?.threadName;
+
+  const [recipientName, setRecipientName] = useState('');
+  const [formValue, setFormValue]         = useState('');
+  const dummy                              = useRef();
+
+  const computedRoomId = roomId || (
+    user && recipientId
+      ? user.uid < recipientId
+        ? `${user.uid}_${recipientId}`
+        : `${recipientId}_${user.uid}`
+      : null
+  );
+
+  const messagesRef = computedRoomId
+    ? collection(firestore, 'chats', computedRoomId, 'messages')
+    : null;
+  const q = computedRoomId
+    ? query(messagesRef, orderBy('createdAt'), limit(25))
+    : null;
   const [messages] = useCollectionData(q, { idField: 'id' });
 
-  const [formValue, setFormValue] = useState('');
+  useEffect(() => {
+    if (!recipientId) return;
+    (async () => {
+      try {
+        const fsDoc = await getDoc(doc(firestore, 'users', recipientId));
+        if (fsDoc.exists() && fsDoc.data().firstName) {
+          setRecipientName(fsDoc.data().firstName);
+          return;
+        }
+        const snap = await rtdbGet(rtdbRef(getDatabase(), `users/${recipientId}`));
+        const data = snap.val();
+        if (data?.firstName) {
+          setRecipientName(data.firstName);
+          return;
+        }
+        setRecipientName(threadName || recipientId);
+      } catch (err) {
+        console.error('Failed to load user name:', err);
+        setRecipientName(threadName || recipientId);
+      }
+    })();
+  }, [recipientId, threadName]);
 
   useEffect(() => {
-    if (dummy.current) {
-      dummy.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    dummy.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  if (!recipientId && !apartmentId && !apartmentName) {
-    return <div className="chat-error">Invalid chat parameters</div>;
-  }
+  if (!user)        return <Navigate to="/login" replace />;
+  if (!recipientId) return <div className="chat-error">No recipient selected.</div>;
 
-  const sendMessage = async (e) => {
+  const sendMessage = async e => {
     e.preventDefault();
     const text = formValue.trim();
     if (!text) return;
 
     await addDoc(messagesRef, {
       text,
-      createdAt: serverTimestamp(),
-      senderId: user.uid,
-      recipientId: recipientId || 'general',
+      createdAt:      serverTimestamp(),
+      senderId:       user.uid,
+      recipientId,
       senderPhotoURL: user.photoURL || null
     });
+
+    await setDoc(
+      doc(firestore, 'chats', computedRoomId),
+      {
+        participants:  [user.uid, recipientId],
+        lastMessage:   text,
+        lastTimestamp: serverTimestamp()
+      },
+      { merge: true }
+    );
 
     setFormValue('');
     dummy.current.scrollIntoView({ behavior: 'smooth' });
@@ -60,12 +111,11 @@ export default function Chat() {
   return (
     <div className="chat-container">
       <header className="chat-header">
-        <h2 className="chat-title">Chat with {apartmentName || 'General Chat'}</h2>
-        <p className="chat-room">Apartment ID: {roomId}</p>
+        <h2 className="chat-title">Chat with {recipientName}</h2>
       </header>
 
       <main className="chat-main">
-        {messages?.map((msg) => (
+        {messages?.map(msg => (
           <ChatMessage
             key={msg.id}
             message={msg}
@@ -79,7 +129,7 @@ export default function Chat() {
         <input
           className="chat-input"
           value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
+          onChange={e => setFormValue(e.target.value)}
           placeholder="Type a message…"
         />
         <button
@@ -95,19 +145,10 @@ export default function Chat() {
 }
 
 function ChatMessage({ message, isSender }) {
-  const { text, senderPhotoURL } = message;
+  const { text } = message;
   return (
     <div className={`chat-message ${isSender ? 'sent' : 'received'}`}>
-      {!isSender && (
-        <img
-          className="chat-avatar"
-          src={
-            senderPhotoURL ||
-            'https://api.adorable.io/avatars/23/abott@adorable.png'
-          }
-          alt="avatar"
-        />
-      )}
+      {/* avatar always uses your gator_front image */}
       <p className="chat-bubble">{text}</p>
     </div>
   );
